@@ -1,0 +1,23 @@
+Halcyon — legacy support copy maintained by Virtual World Research Inc
+
+This copy is based on HalcyonGrid's "halcyon" repository, master at commit
+3125cc15 (5 March 2023).
+
+The whole tree is licensed under the three-clause BSD licence in LICENSE
+("Copyright (c) 2015, InWorldz Inc."). About a quarter of its C# files
+(515 of 2,104 at the base commit) carry no copyright or licence notice of
+their own; they are covered by LICENSE all the same. We have not added
+notices to other people's files.
+
+Copyright holders:
+- the OpenSimulator contributors (http://opensimulator.org/), for the code
+  Halcyon took from OpenSimulator 0.6.5;
+- InWorldz Inc. (later IslandzVW), for Halcyon to August 2018;
+- HalcyonGrid's contributors, for changes from August 2018 to March 2023;
+- Virtual World Research Inc and contributors, for changes in this copy.
+
+Authors are credited in CONTRIBUTORS.md. Third-party libraries and their
+licences are listed in THIRD-PARTY.md and ThirdPartyLicenses/.
+
+This copy is not endorsed by InWorldz, IslandzVW, HalcyonGrid or Halcyon's
+original authors.
