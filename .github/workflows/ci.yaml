@@ -16,20 +16,20 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-20.04
-          - windows-2019
+          - ubuntu-22.04
+          - windows-2022
         
     steps:
       - name: Setup NuGet.exe for use with actions
-        uses: NuGet/setup-nuget@v1.0.5
+        uses: NuGet/setup-nuget@v2
 
       - name: Add msbuild to PATH
         if: success() && runner.os == 'Windows'
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v2
 
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v4
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v4
         id: cache
         with:
           path: |
@@ -44,7 +44,7 @@ jobs:
             COMPILED_BY="Mono"
             EDITION="Mono"
           elif [[ "$RUNNER_OS" == "Windows" ]]; then
-            COMPILED_BY="VS2019"
+            COMPILED_BY="VS2022"
             EDITION="dotnet"
           else
             echo "$RUNNER_OS not supported"
@@ -54,6 +54,11 @@ jobs:
           echo "COMPILED_BY=$COMPILED_BY"; echo "COMPILED_BY=$COMPILED_BY" >> $GITHUB_ENV
           echo "EDITION=$EDITION"; echo "EDITION=$EDITION" >> $GITHUB_ENV
         shell: bash
+
+      - name: NuGet restore
+        # Before prebuild: runprebuild copies some NuGet packages into bin/.
+        # if: success() && steps.cache.outputs.cache-hit != 'true' # Enabling this causes the build to fail when the cache is filled.
+        run: nuget restore Halcyon.sln
 
       - name: Run prebuild (Linux)
         if: success() && runner.os == 'Linux'
@@ -66,10 +71,6 @@ jobs:
         run: |
           ./runprebuild.bat
         shell: cmd
-
-      - name: NuGet restore
-        # if: success() && steps.cache.outputs.cache-hit != 'true' # Enabling this causes the build to fail when the cache is filled.
-        run: nuget restore Halcyon.sln
 
       - name: Build (Mono)
         if: success() && runner.os == 'Linux'
@@ -98,7 +99,7 @@ jobs:
         shell: bash
 
       - name: Upload test results
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: test-results_${{ matrix.os }}
