@@ -1,0 +1,18 @@
+<!--
+  Copyright (c) 2026, Virtual World Research Inc and contributors.
+  Licensed under the BSD-3-Clause licence; see LICENSE.
+-->
+<!--
+  MSBuild imports this file into every project in the tree. The projects look
+  for their libraries in bin/, which runprebuild fills from lib/ and from the
+  NuGet packages (see THIRD-PARTY.md). build.ps1, build.sh and CI run it before
+  building; this check stops a build started any other way (Visual Studio, or a
+  plain "msbuild Halcyon.sln") with a clear message instead of a page of
+  missing-reference errors.
+-->
+<Project>
+  <Target Name="HalcyonCheckPrebuild" BeforeTargets="ResolveAssemblyReferences"
+          Condition="!Exists('$(MSBuildThisFileDirectory)bin\log4net.dll')">
+    <Error Text="bin\ has not been prepared. From the repository root, run &quot;nuget restore Halcyon.sln&quot; and then runprebuild.bat (Windows) or ./runprebuild.sh (Linux, macOS), or build with build.ps1 or build.sh, which do both." />
+  </Target>
+</Project>
