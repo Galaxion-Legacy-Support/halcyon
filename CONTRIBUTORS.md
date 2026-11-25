@@ -42,6 +42,10 @@ The authors below appear in Halcyon's public history, from InWorldz releasing it
 
 The original history, with every change and its author, is in HalcyonGrid's `halcyon` repository and, up to August 2018, in IslandzVW's.
 
+### The wiki
+
+This repository's wiki began as Halcyon's wiki (HalcyonGrid `halcyon.wiki`, 2015–2018), written by David Daeschler, Bob Curtice, Ricky Curtice, cb-dtf, Cinder and the Appurist accounts. Our pages are written anew from it; see the wiki's Credits page.
+
 ### Bundled libraries
 
 The authors of the libraries Halcyon uses are credited in [THIRD-PARTY.md](THIRD-PARTY.md) and in `ThirdPartyLicenses/`.
