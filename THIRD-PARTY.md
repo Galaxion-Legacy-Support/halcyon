@@ -64,7 +64,7 @@ These were bundled as ready-built files with **no licence file** in the tree, an
 | Castle Core 1.0.3, DynamicProxy 1.1.5 and 2.0.3 | `lib/Castle.Core.dll`, `lib/Castle.DynamicProxy.dll`, `lib/Castle.DynamicProxy2.dll` | Apache-2.0 | castleproject.org | Not checked | Not used by the code |
 | ANTLR 3.3.1 runtime and StringTemplate | `lib/Antlr3.Runtime.dll`, `lib/Antlr3.Runtime.Debug.dll`, `lib/Antlr3.StringTemplate.dll` | BSD-3-Clause | antlr.org | Not this version (`Antlr3.Runtime` 3.5.1 only) | |
 | AprSharp 1.0 | `lib/AprSharp.dll` | | SOFTEC sa | Not checked | Not used by the code |
-| BclExtras35 1.0 | `lib/BclExtras35.dll` | | | Not checked | |
+| BclExtras35 1.0 | `lib/BclExtras35.dll` | | | **No longer needed** | Halcyon used only `Singleton.GetInstance`, in `OpenSim/Framework/Util.cs`; replaced with a static field. |
 | CSJ2K 1.0.5030 | `lib/CSJ2K.dll` | | | Not this version (0.9.x, 2.x, 3.x) | |
 | DotNetOpenMail 1.0 | `lib/DotNetOpenMail.dll` | | | Not checked | |
 | DotSets 1.0 | `lib/DotSets.dll` | | | Not checked | Not used by the code |
