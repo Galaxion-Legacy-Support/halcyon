@@ -1,0 +1,16 @@
+# Files runprebuild copies from NuGet packages into bin/ (see THIRD-PARTY.md).
+# Each line: package id, version (as in .nuget/packages.config), path inside the
+# package, folder under bin/ ("." for bin/ itself). Keep in step with
+# .nuget/packages.config. NuGet may name a package's folder with a slightly
+# different version (1.6.0.0, 1.0), so runprebuild matches versions loosely.
+CompareNETObjects          1.6.0    lib/KellermanSoftware.Compare-NET-Objects.dll                            .
+log4net                    2.0.17   lib/net45/log4net.dll                                                    .
+Mono.Addins                1.0.0    lib/net20/Mono.Addins.dll                                                .
+openstack.net              1.3.2    lib/net40/openstacknet.dll                                               .
+SimpleRESTServices         1.3.0.1  lib/net40/SimpleRESTServices.dll                                         .
+System.Collections.Immutable 1.1.37 lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll       .
+System.Data.SQLite.Core    1.0.98   lib/net45/System.Data.SQLite.dll                                         .
+System.Data.SQLite.Core    1.0.98   build/net45/x86/SQLite.Interop.dll                                       x86
+System.Data.SQLite.Core    1.0.98   build/net45/x64/SQLite.Interop.dll                                       x64
+Thrift                     0.6.0    lib/net35/Thrift.dll                                                     .
+zlib.net                   1.0.3    lib/zlib.net.dll                                                         .
