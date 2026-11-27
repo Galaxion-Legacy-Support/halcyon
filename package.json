@@ -4,13 +4,13 @@
     "private": true,
     "repository": {
         "type": "git",
-        "url": "https://github.com/HalcyonGrid/halcyon.git"
+        "url": "https://github.com/Galaxion-Legacy-Support/halcyon.git"
     },
     "license": "BSD-3-Clause",
     "bugs": {
-        "url": "https://github.com/HalcyonGrid/halcyon/issues"
+        "url": "https://github.com/Galaxion-Legacy-Support/halcyon/issues"
     },
-    "homepage": "https://github.com/HalcyonGrid/halcyon#readme",
+    "homepage": "https://github.com/Galaxion-Legacy-Support/halcyon#readme",
     "scripts": {
         "build:scripts": "tsc --project .scripts/tsconfig.json",
         "build:workflow-scripts": "tsc --project .github/scripts/tsconfig.json",
