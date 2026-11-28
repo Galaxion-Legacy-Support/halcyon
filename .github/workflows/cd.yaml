@@ -40,7 +40,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 14 # TODO: pull from package.json or something.
+          node-version: 22
 
       - name: Fetch NPM dependencies
         # Skip scripts here, as a malicious script could steal NODE_AUTH_TOKEN.
@@ -73,7 +73,7 @@ jobs:
           echo "previousVersion=$previousVersion"; echo "previousVersion=$previousVersion" >> "$GITHUB_OUTPUT"
 
           # Set the base version so that the next tool will know where to start.
-          "$(npm bin)/ts-node-script" .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt "${previousVersion}" || exit 1
+          npx --no-install ts-node-script .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt "${previousVersion}" || exit 1
 
           # Update from base version to new version using commit messages to flesh things out.
           # HACK: Using kf6kjg/standard-version#ricky_release until https://github.com/conventional-changelog/standard-version/pull/728 or similar is merged.
@@ -97,10 +97,10 @@ jobs:
             >> "$changelogPath" \
           ;
 
-          version="$( "$(npm bin)/ts-node-script" .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt )"
+          version="$( npx --no-install ts-node-script .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt )"
           echo "version=$version"; echo "version=$version" >> "$GITHUB_OUTPUT"
 
-          "$(npm bin)/prettier" --write CHANGELOG.md
+          npx --no-install prettier --write CHANGELOG.md
 
           # changelog="$( sed -ze 's/%/%25/g' -e 's/\n/%0A/g' -e 's/\r/%0D/g' "$changelogPath" )"
           # echo "changelog=$changelog"; echo "changelog=$changelog" >> "$GITHUB_OUTPUT"
@@ -188,7 +188,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 14 # TODO: pull from package.json or something.
+          node-version: 22
 
       - name: Fetch NPM dependencies
         # Skip scripts here, as a malicious script could steal NODE_AUTH_TOKEN.
@@ -216,7 +216,7 @@ jobs:
 
       - name: Update version data
         run: |
-          "$(npm bin)/ts-node-script" .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt "${{ needs.prepare.outputs.version }}"
+          npx --no-install ts-node-script .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt "${{ needs.prepare.outputs.version }}"
         shell: bash
 
       - name: Run prebuild (Linux)
@@ -303,7 +303,7 @@ jobs:
         env:
           RELEASE_INFO: ${{ needs.prepare.outputs.releaseInfo }}
         run: |
-          "$(npm bin)/ts-node-script" -- \
+          npx --no-install ts-node-script -- \
             ./.github/scripts/cd/upload_release_artifact.ts \
             '${{ steps.artifacts.outputs.artifactPath }}' \
             '${{ steps.artifacts.outputs.artifactMimeType }}' \
