@@ -15,7 +15,7 @@ export async function uploadReleaseArtifact(
 ): Promise<void> {
     const github = getOctokit(pat);
 
-    const assets = await github.repos.listReleaseAssets({
+    const assets = await github.rest.repos.listReleaseAssets({
         ...context.repo,
         release_id: releaseInfo.release.id,
     });
@@ -24,14 +24,14 @@ export async function uploadReleaseArtifact(
 
     for (const asset of assets.data) {
         if (asset.name === name) {
-            await github.repos.deleteReleaseAsset({
+            await github.rest.repos.deleteReleaseAsset({
                 ...context.repo,
                 asset_id: asset.id,
             });
         }
     }
 
-    await github.repos.uploadReleaseAsset({
+    await github.rest.repos.uploadReleaseAsset({
         ...context.repo,
         // baseUrl: releaseInfo.release.uploadUrl,
         data: createReadStream(artifactPath) as unknown as string, // This is such a bad idea. Why didn't they utilize a clean file stream interface?! No base64, no "strings", just bytes.
