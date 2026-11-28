@@ -9,6 +9,7 @@ env:
 
 permissions:
   contents: write # Creating the draft release and uploading to it.
+  packages: read # Halcyon.Whip.Client from our own feed.
 
 on:
   push:
@@ -153,7 +154,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-24.04
+          - ubuntu-22.04 # As ci.yaml: its image still has Mono and msbuild.
           - windows-2022
 
     steps:
@@ -233,6 +234,18 @@ jobs:
         run: |
           ./runprebuild.bat
         shell: cmd
+
+      - name: Sign in to our NuGet feed
+        # For Halcyon.Whip.Client. Written into the runner's copy of nuget.config only.
+        if: hashFiles('nuget.config') != ''
+        env:
+          TOKEN: ${{ github.token }}
+        run: >-
+          nuget sources update -Name galaxion-legacy-support
+          -Source https://nuget.pkg.github.com/Galaxion-Legacy-Support/index.json
+          -Username "$GITHUB_ACTOR" -Password "$TOKEN"
+          -StorePasswordInClearText -ConfigFile nuget.config
+        shell: bash
 
       - name: NuGet restore
         # if: success() && steps.nuGetCache.outputs.cache-hit != 'true' # Enabling this causes the build to fail when the cache is filled.
