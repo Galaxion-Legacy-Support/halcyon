@@ -72,6 +72,13 @@ jobs:
           ./runprebuild.bat
         shell: cmd
 
+      - name: Check log4net binding redirects
+        # LibreMetaverse.dll was built against log4net 2.0.8; each program's config
+        # must redirect it to the version runprebuild put in bin/.
+        if: success() && runner.os == 'Windows'
+        run: ./scripts/check-log4net-redirects.ps1
+        shell: pwsh
+
       - name: Build (Mono)
         if: success() && runner.os == 'Linux'
         run: msbuild /p:DefineConstants="_MONO_CLI_FLAG_" Halcyon.sln

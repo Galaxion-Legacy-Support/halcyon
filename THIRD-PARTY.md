@@ -52,7 +52,7 @@ These were bundled as ready-built files with **no licence file** in the tree, an
 | SQLite 3.8.11.1 | `lib/sqlite3.dll` (and `sqlite3.dll.version.txt`), `lib/libsqlite3.so.0.8.6` | Public domain | sqlite.org | Native library comes with `System.Data.SQLite.Core` | |
 | System.Data.SQLite 1.0.98 | `lib/System.Data.SQLite.dll` | Public domain | system.data.sqlite.org | **Yes: `System.Data.SQLite.Core` 1.0.98 (fetched)** | |
 | Mono.Data.SqliteClient 2.0 | `lib/Mono.Data.SqliteClient.dll` | MIT (Mono) | Mono | Not checked | Not used by the code |
-| Apache log4net 2.0.8 | `lib/log4net.dll` | Apache-2.0 | logging.apache.org | **Yes: `log4net` 2.0.8 (fetched)** | |
+| Apache log4net 2.0.17 | `lib/log4net.dll` | Apache-2.0 | logging.apache.org | **Yes: `log4net` 2.0.17 (fetched)** | Moved from 2.0.8, which NuGet unlisted in April 2026 and which has a critical XXE (CVE-2018-1285, fixed in 2.0.10). The program configs redirect LibreMetaverse, built against 2.0.8, to it. |
 | Mono.Addins 1.0 | `lib/Mono.Addins.dll` (and `.dll.config`) | MIT | github.com/mono/mono-addins | **Yes: `Mono.Addins` 1.0.0 (fetched)** | |
 | Apache Thrift 0.6.0 | `lib/Thrift.dll` | Apache-2.0 | thrift.apache.org | **Yes: `Thrift` 0.6.0 (fetched)** | |
 | openstack.net 1.3.2 | `lib/openstacknet.dll` (and `.xml`) | Per the package's licence page | github.com/openstacknetsdk | **Yes: `openstack.net` 1.3.2 (fetched)** | |
@@ -64,7 +64,7 @@ These were bundled as ready-built files with **no licence file** in the tree, an
 | Castle Core 1.0.3, DynamicProxy 1.1.5 and 2.0.3 | `lib/Castle.Core.dll`, `lib/Castle.DynamicProxy.dll`, `lib/Castle.DynamicProxy2.dll` | Apache-2.0 | castleproject.org | Not checked | Not used by the code |
 | ANTLR 3.3.1 runtime and StringTemplate | `lib/Antlr3.Runtime.dll`, `lib/Antlr3.Runtime.Debug.dll`, `lib/Antlr3.StringTemplate.dll` | BSD-3-Clause | antlr.org | Not this version (`Antlr3.Runtime` 3.5.1 only) | |
 | AprSharp 1.0 | `lib/AprSharp.dll` | | SOFTEC sa | Not checked | Not used by the code |
-| BclExtras35 1.0 | `lib/BclExtras35.dll` | | | Not checked | |
+| BclExtras35 1.0 | `lib/BclExtras35.dll` | | | **No longer needed** | Halcyon used only `Singleton.GetInstance`, in `OpenSim/Framework/Util.cs`; replaced with a static field. |
 | CSJ2K 1.0.5030 | `lib/CSJ2K.dll` | | | Not this version (0.9.x, 2.x, 3.x) | |
 | DotNetOpenMail 1.0 | `lib/DotNetOpenMail.dll` | | | Not checked | |
 | DotSets 1.0 | `lib/DotSets.dll` | | | Not checked | Not used by the code |
@@ -83,7 +83,7 @@ These were bundled as ready-built files with **no licence file** in the tree, an
 
 ### Fetched from NuGet
 
-The build restores these through `.nuget/packages.config`, and `runprebuild` copies them into `bin/`, where the projects already look for them: `log4net` 2.0.8, `Mono.Addins` 1.0.0, `CompareNETObjects` 1.6.0, `zlib.net` 1.0.3, `openstack.net` 1.3.2, `SimpleRESTServices` 1.3.0.1, `Thrift` 0.6.0, `System.Collections.Immutable` 1.1.37 and `System.Data.SQLite.Core` 1.0.98. Only these exact versions are fetched; moving to newer versions belongs to ROADMAP step 2.
+The build restores these through `.nuget/packages.config`, and `runprebuild` copies them into `bin/`, where the projects already look for them: `log4net` 2.0.17, `Mono.Addins` 1.0.0, `CompareNETObjects` 1.6.0, `zlib.net` 1.0.3, `openstack.net` 1.3.2, `SimpleRESTServices` 1.3.0.1, `Thrift` 0.6.0, `System.Collections.Immutable` 1.1.37 and `System.Data.SQLite.Core` 1.0.98. Only these exact versions are fetched; moving to newer versions belongs to ROADMAP step 2. The exception is log4net, moved to 2.0.17 because 2.0.8 was unlisted and has a critical security fix missing.
 
 ### Build output in `bin/`
 

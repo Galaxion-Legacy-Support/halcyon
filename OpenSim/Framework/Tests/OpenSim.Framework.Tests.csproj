@@ -75,11 +75,6 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BclExtras35">
-      <Name>BclExtras35</Name>
-      <HintPath>..\..\..\bin\BclExtras35.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="C5">
       <Name>C5</Name>
       <HintPath>..\..\..\bin\C5.dll</HintPath>
