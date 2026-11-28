@@ -75,9 +75,9 @@
 		<HintPath>..\..\..\bin\GlynnTucker.Cache.dll</HintPath>
 		<Private>False</Private>
 	  </Reference>
-	  <Reference Include="InWorldz.Whip.Client" >
-		  <Name>InWorldz.Whip.Client</Name>
-		<HintPath>..\..\..\bin\InWorldz.Whip.Client.dll</HintPath>
+	  <Reference Include="Halcyon.Whip.Client" >
+		  <Name>Halcyon.Whip.Client</Name>
+		<HintPath>..\..\..\bin\Halcyon.Whip.Client.dll</HintPath>
 		<Private>False</Private>
 	  </Reference>
 	  <Reference Include="LibreMetaverse" >

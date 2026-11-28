@@ -3,6 +3,10 @@ name: CI
 env:
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
+permissions:
+  contents: read
+  packages: read # Halcyon.Whip.Client from our own feed.
+
 on:
   pull_request:
 
@@ -53,6 +57,17 @@ jobs:
 
           echo "COMPILED_BY=$COMPILED_BY"; echo "COMPILED_BY=$COMPILED_BY" >> $GITHUB_ENV
           echo "EDITION=$EDITION"; echo "EDITION=$EDITION" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Sign in to our NuGet feed
+        # For Halcyon.Whip.Client. Written into the runner's copy of nuget.config only.
+        env:
+          TOKEN: ${{ github.token }}
+        run: >-
+          nuget sources update -Name galaxion-legacy-support
+          -Source https://nuget.pkg.github.com/Galaxion-Legacy-Support/index.json
+          -Username "$GITHUB_ACTOR" -Password "$TOKEN"
+          -StorePasswordInClearText -ConfigFile nuget.config
         shell: bash
 
       - name: NuGet restore
