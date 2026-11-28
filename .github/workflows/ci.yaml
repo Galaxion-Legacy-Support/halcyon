@@ -7,6 +7,35 @@ on:
   pull_request:
 
 jobs:
+  release-scripts:
+    name: Checking the release scripts
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22 # Keep in step with cd.yaml.
+          cache: npm
+
+      - name: Fetch NPM dependencies
+        run: npm ci --no-fund --legacy-peer-deps # eslint 7 vs @typescript-eslint 8; lint only, unused by CD.
+        env:
+          NODE_ENV: cd # Same as cd.yaml, so the dev dependencies are installed.
+
+      - name: Compile the scripts cd.yaml runs
+        run: |
+          npm run build:scripts
+          npm run build:workflow-scripts
+          npx --no-install ts-node-script .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt
+          git checkout -- OpenSim/Framework/Servers/VersionInfo.tt
+
+      - name: Load the compiled release-draft script
+        # cd.yaml runs it inside actions/github-script, so it must load nothing itself.
+        run: node -e 'require("./.github/scripts/.build/cd/create_release_draft.js"); console.log("ok");'
+
   build-and-test:
     name: Building and testing
 

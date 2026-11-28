@@ -1,8 +1,7 @@
 import { promises as FS } from "fs";
 
-import { Context } from "@actions/github/lib/context";
-import { GitHub } from "@actions/github/lib/utils";
-import { RequestParameters } from "@octokit/types";
+import type { context as actionsContext, getOctokit } from "@actions/github";
+import type { RequestParameters } from "@octokit/types";
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -23,8 +22,8 @@ type QueryVariables = RequestParameters & {
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export async function createReleaseDraft(
-    github: InstanceType<typeof GitHub>,
-    context: Context,
+    github: ReturnType<typeof getOctokit>,
+    context: typeof actionsContext,
     newVersion: string,
     changelogPath?: string
 ): Promise<ReleaseInfo> {
@@ -35,7 +34,7 @@ export async function createReleaseDraft(
         repo: context.repo.repo,
     };
 
-    const { data: releases } = await github.repos.listReleases({
+    const { data: releases } = await github.rest.repos.listReleases({
         ...variables,
     });
 
@@ -49,14 +48,14 @@ export async function createReleaseDraft(
         }
     }
 
-    const currentRelease = releases?.find((rel) => rel.tag_name === versionTag);
+    const currentRelease = releases?.find((rel: { tag_name: string }) => rel.tag_name === versionTag);
 
     if (!currentRelease) {
         process.stdout.write(
             `No matching release found, creating from scratch.\n`
         );
 
-        const created = await github.repos.createRelease({
+        const created = await github.rest.repos.createRelease({
             ...variables,
             body,
             draft: true,
@@ -104,7 +103,7 @@ export async function createReleaseDraft(
 
     process.stdout.write(`Updating existing draft release.\n`);
 
-    const updated = await github.repos.updateRelease({
+    const updated = await github.rest.repos.updateRelease({
         ...variables,
         body,
         release_id: currentRelease.id,
