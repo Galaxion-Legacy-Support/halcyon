@@ -21,16 +21,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Blunt hammer that pulls in all the branches, but is the only current way to fetch all the tags in the current branch. See https://github.com/actions/checkout/issues/338
 
       - name: Get npm cache directory
         id: npmCacheDir
         run: |
-          echo "::set-output name=dir::$(npm config get cache)"
+          echo "dir=$(npm config get cache)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         id: npmCache
         with:
           path: ${{ steps.npmCacheDir.outputs.dir }}
@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v4
         with:
           node-version: 14 # TODO: pull from package.json or something.
 
@@ -70,7 +70,7 @@ jobs:
 
           # Choose only main release version tags.
           previousVersion="$( grep -E '^v[0-9]+(\.[0-9]+){2}$' prevVersions.txt | head -n 1 | cut -c2- )"
-          echo "previousVersion=$previousVersion"; echo "::set-output name=previousVersion::$previousVersion"
+          echo "previousVersion=$previousVersion"; echo "previousVersion=$previousVersion" >> "$GITHUB_OUTPUT"
 
           # Set the base version so that the next tool will know where to start.
           "$(npm bin)/ts-node-script" .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt "${previousVersion}" || exit 1
@@ -98,13 +98,13 @@ jobs:
           ;
 
           version="$( "$(npm bin)/ts-node-script" .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt )"
-          echo "version=$version"; echo "::set-output name=version::$version"
+          echo "version=$version"; echo "version=$version" >> "$GITHUB_OUTPUT"
 
           "$(npm bin)/prettier" --write CHANGELOG.md
 
           # changelog="$( sed -ze 's/%/%25/g' -e 's/\n/%0A/g' -e 's/\r/%0D/g' "$changelogPath" )"
-          # echo "changelog=$changelog"; echo "::set-output name=changelog::$changelog"
-          echo "changelogPath=$changelogPath"; echo "::set-output name=changelogPath::$changelogPath"
+          # echo "changelog=$changelog"; echo "changelog=$changelog" >> "$GITHUB_OUTPUT"
+          echo "changelogPath=$changelogPath"; echo "changelogPath=$changelogPath" >> "$GITHUB_OUTPUT"
         shell: bash
 
       # Creating a PR causes recursion: when you merge the PR this whole action will execute again.
@@ -131,7 +131,7 @@ jobs:
             const releaseInfoSerialized = JSON.stringify(releaseInfo);
 
             process.stdout.write(`releaseInfo=${releaseInfoSerialized}\n`);
-            process.stdout.write(`::set-output name=releaseInfo::${releaseInfoSerialized}\n`);
+            core.setOutput("releaseInfo", releaseInfoSerialized);
 
     outputs:
       previousVersion: ${{ steps.info.outputs.previousVersion }}
@@ -150,26 +150,26 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-20.04
-          - windows-2019
+          - ubuntu-24.04
+          - windows-2022
 
     steps:
       - name: Setup NuGet.exe for use with actions
-        uses: NuGet/setup-nuget@v1.0.5
+        uses: NuGet/setup-nuget@v2
 
       - name: Add msbuild to PATH
         if: success() && runner.os == 'Windows'
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v2
 
       - name: Checkout code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v4
 
       - name: Get npm cache directory
         id: npmCacheDir
         run: |
-          echo "::set-output name=dir::$(npm config get cache)"
+          echo "dir=$(npm config get cache)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         id: npmCache
         with:
           path: ${{ steps.npmCacheDir.outputs.dir }}
@@ -177,7 +177,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v4
         id: nuGetCache
         with:
           path: |
@@ -186,7 +186,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-nuget-
 
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v4
         with:
           node-version: 14 # TODO: pull from package.json or something.
 
@@ -203,7 +203,7 @@ jobs:
             COMPILED_BY="Mono"
             EDITION="Mono"
           elif [[ "$RUNNER_OS" == "Windows" ]]; then
-            COMPILED_BY="VS2019"
+            COMPILED_BY="VS2022"
             EDITION="dotnet"
           else
             echo "$RUNNER_OS not supported"
@@ -249,7 +249,7 @@ jobs:
           If (Test-Path "bin/OpenSim.Framework.Servers.dll") {
             $halcyon_version = (Get-ChildItem -Path bin/OpenSim.Framework.Servers.dll | % versioninfo).ProductVersion
             Write-Output "Detected version: $halcyon_version"
-            Write-Output "::set-output name=version::$halcyon_version"
+            "version=$halcyon_version" >> $env:GITHUB_OUTPUT
           }
         shell: pwsh
 
@@ -287,13 +287,13 @@ jobs:
             tar cfJ "$artifactPath" "$releaseBin"
           fi
 
-          echo "artifactPath=$artifactPath"; echo "::set-output name=artifactPath::$artifactPath"
-          echo "artifactMimeType=$artifactMimeType"; echo "::set-output name=artifactMimeType::$artifactMimeType"
-          echo "releaseBin=$releaseBin"; echo "::set-output name=releaseBin::$releaseBin"
+          echo "artifactPath=$artifactPath"; echo "artifactPath=$artifactPath" >> "$GITHUB_OUTPUT"
+          echo "artifactMimeType=$artifactMimeType"; echo "artifactMimeType=$artifactMimeType" >> "$GITHUB_OUTPUT"
+          echo "releaseBin=$releaseBin"; echo "releaseBin=$releaseBin" >> "$GITHUB_OUTPUT"
         shell: bash
 
       - name: Upload artifacts to workflow run for diagnostic testing
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.artifacts.outputs.releaseBin }}
           path: ${{ steps.artifacts.outputs.releaseBin }}
