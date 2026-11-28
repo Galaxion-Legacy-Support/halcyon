@@ -21,7 +21,7 @@ jobs:
           cache: npm
 
       - name: Fetch NPM dependencies
-        run: npm ci --no-fund
+        run: npm ci --no-fund --legacy-peer-deps # eslint 7 vs @typescript-eslint 8; lint only, unused by CD.
         env:
           NODE_ENV: cd # Same as cd.yaml, so the dev dependencies are installed.
 

@@ -45,7 +45,7 @@ jobs:
       - name: Fetch NPM dependencies
         # Skip scripts here, as a malicious script could steal NODE_AUTH_TOKEN.
         run: |
-          npm ci --no-fund
+          npm ci --no-fund --legacy-peer-deps # eslint 7 vs @typescript-eslint 8; lint only, unused by CD.
         env:
           NODE_ENV: cd # Override so that we get the dev dependencies.
 
@@ -193,7 +193,7 @@ jobs:
       - name: Fetch NPM dependencies
         # Skip scripts here, as a malicious script could steal NODE_AUTH_TOKEN.
         run: |
-          npm ci --no-fund
+          npm ci --no-fund --legacy-peer-deps # eslint 7 vs @typescript-eslint 8; lint only, unused by CD.
         env:
           NODE_ENV: cd # Override so that we get the dev dependencies.
 
