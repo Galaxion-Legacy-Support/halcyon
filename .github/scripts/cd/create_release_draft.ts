@@ -48,7 +48,7 @@ export async function createReleaseDraft(
         }
     }
 
-    const currentRelease = releases?.find((rel) => rel.tag_name === versionTag);
+    const currentRelease = releases?.find((rel: { tag_name: string }) => rel.tag_name === versionTag);
 
     if (!currentRelease) {
         process.stdout.write(
