@@ -36,6 +36,7 @@ using OpenSim.Framework;
 using log4net;
 using System.Reflection;
 using OpenSim.Framework.AssetLoader.Filesystem;
+using Halcyon.Whip.Client; // RemoteServer and Asset, from our Halcyon.Whip.Client package
 
 namespace InWorldz.Whip.Client
 {

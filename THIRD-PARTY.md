@@ -75,7 +75,7 @@ These were bundled as ready-built files with **no licence file** in the tree, an
 | BulletSim wrapper | `lib/libbulletnet.dll` | | | Not checked | Not used by the code |
 | MonoXnaCompactMaths, Mono.PEToolkit, NDesk.Options | `lib/MonoXnaCompactMaths.dll`, `lib/Mono.PEToolkit.dll`, `lib/NDesk.Options.dll` | | | Not checked | Not used by the code |
 | Phlox script engine | `lib/InWorldz.Phlox.dll` | Licence in its own repository, not in this tree | Companion repository `phlox` | No | Built from `phlox` |
-| WHIP client | `lib/InWorldz.Whip.Client.dll` | Licence in its own repository, not in this tree | Companion repository `whip-client` | No | Built from `whip-client` |
+| WHIP client | `bin/Halcyon.Whip.Client.dll` (was `lib/InWorldz.Whip.Client.dll`) | Apache-2.0, in its own repository | Companion repository `halcyon-whip-dotnet-client` | **Yes: `Halcyon.Whip.Client` 1.2.0 (fetched, from our own feed)** | Our build of the client, published by that repository's releases. Its namespace is `Halcyon.Whip.Client`; Halcyon's own `AssetClient` keeps `InWorldz.Whip.Client`, which configs name. |
 | Aperture | `bin/aperture.exe` | Licence in its own repository, not in this tree | Companion repository `aperture` | No | Built from `aperture` |
 | hc-database | `bin/hc-database.exe` (and `.exe.config`) | Source not in this tree | | No | |
 
@@ -83,7 +83,13 @@ These were bundled as ready-built files with **no licence file** in the tree, an
 
 ### Fetched from NuGet
 
-The build restores these through `.nuget/packages.config`, and `runprebuild` copies them into `bin/`, where the projects already look for them: `log4net` 2.0.17, `Mono.Addins` 1.0.0, `CompareNETObjects` 1.6.0, `zlib.net` 1.0.3, `openstack.net` 1.3.2, `SimpleRESTServices` 1.3.0.1, `Thrift` 0.6.0, `System.Collections.Immutable` 1.1.37 and `System.Data.SQLite.Core` 1.0.98. Only these exact versions are fetched; moving to newer versions belongs to ROADMAP step 2. The exception is log4net, moved to 2.0.17 because 2.0.8 was unlisted and has a critical security fix missing.
+The build restores these through `.nuget/packages.config`, and `runprebuild` copies them into `bin/`, where the projects already look for them: `log4net` 2.0.17, `Mono.Addins` 1.0.0, `CompareNETObjects` 1.6.0, `zlib.net` 1.0.3, `openstack.net` 1.3.2, `SimpleRESTServices` 1.3.0.1, `Thrift` 0.6.0, `System.Collections.Immutable` 1.1.37 and `System.Data.SQLite.Core` 1.0.98, all from nuget.org; and `Halcyon.Whip.Client` 1.2.0 from our own feed. Only these exact versions are fetched; moving to newer versions belongs to ROADMAP step 2. The exception is log4net, moved to 2.0.17 because 2.0.8 was unlisted and has a critical security fix missing.
+
+Our own feed is GitHub Packages (`https://nuget.pkg.github.com/Galaxion-Legacy-Support/index.json`, named in `nuget.config`). GitHub asks for a sign-in even to read it. CI signs in with its own token. To build on your own machine, add your credentials once, outside the repository:
+
+```
+nuget sources update -Name galaxion-legacy-support -Username <your GitHub name> -Password <a token with read:packages>
+```
 
 ### Build output in `bin/`
 
