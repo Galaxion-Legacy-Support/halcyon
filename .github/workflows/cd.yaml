@@ -93,7 +93,7 @@ jobs:
             >> "$changelogPath" \
           ;
 
-          git log "v${previousVersion}..HEAD" --pretty="format:- %s ([%h](https://github.com/HalcyonGrid/halcyon/commit/%H))" \
+          git log "v${previousVersion}..HEAD" --pretty="format:- %s ([%h](${{ github.server_url }}/${{ github.repository }}/commit/%H))" \
             >> "$changelogPath" \
           ;
 
