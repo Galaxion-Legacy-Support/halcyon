@@ -1,7 +1,7 @@
 import { promises as FS } from "fs";
 
-import { context as actionsContext, getOctokit } from "@actions/github";
-import { RequestParameters } from "@octokit/types";
+import type { context as actionsContext, getOctokit } from "@actions/github";
+import type { RequestParameters } from "@octokit/types";
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

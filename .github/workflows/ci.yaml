@@ -32,9 +32,9 @@ jobs:
           npx --no-install ts-node-script .scripts/versioninfo_t4.ts OpenSim/Framework/Servers/VersionInfo.tt
           git checkout -- OpenSim/Framework/Servers/VersionInfo.tt
 
-      - name: Load the compiled release scripts and their packages
-        run: |
-          node -e 'require("./.github/scripts/.build/cd/create_release_draft.js"); require("./.github/scripts/.build/cd/upload_release_artifact.js"); const { getOctokit } = require("@actions/github"); if (typeof getOctokit("x").rest.repos.createRelease !== "function") process.exit(1); console.log("ok");'
+      - name: Load the compiled release-draft script
+        # cd.yaml runs it inside actions/github-script, so it must load nothing itself.
+        run: node -e 'require("./.github/scripts/.build/cd/create_release_draft.js"); console.log("ok");'
 
   build-and-test:
     name: Building and testing

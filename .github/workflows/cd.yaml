@@ -7,6 +7,9 @@ concurrency:
 env:
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
+permissions:
+  contents: write # Creating the draft release and uploading to it.
+
 on:
   push:
     branches:
@@ -301,12 +304,7 @@ jobs:
 
       - name: Upload artifacts to release
         env:
-          RELEASE_INFO: ${{ needs.prepare.outputs.releaseInfo }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          npx --no-install ts-node-script -- \
-            ./.github/scripts/cd/upload_release_artifact.ts \
-            '${{ steps.artifacts.outputs.artifactPath }}' \
-            '${{ steps.artifacts.outputs.artifactMimeType }}' \
-            '${{ secrets.GITHUB_TOKEN }}' \
-          ;
+          gh release upload 'v${{ needs.prepare.outputs.version }}' '${{ steps.artifacts.outputs.artifactPath }}' --clobber --repo '${{ github.repository }}'
         shell: bash
